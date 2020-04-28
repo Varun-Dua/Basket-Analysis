@@ -51,13 +51,14 @@ Merge2$Basket_ID <- as.factor(Merge2$Basket_ID)
 Merge2$CategoryCDescription <- as.factor(Merge2$CategoryCDescription)
 POSData_by_Cat <- split(Merge2$CategoryCDescription, Merge2$Basket_ID)
 Basket <- as(POSData_by_Cat, "transactions")
-itemsets <- apriori(Basket, parameter=list(minlen= 2, support=0.01, target="frequent itemsets"))
-inspect(sort(itemsets, by ="support"))
+itemsets <- apriori(Basket, parameter=list(minlen= 4, support=0.005, target="frequent itemsets"))
+d <- inspect(sort(itemsets, by ="support"))
+write.csv(d , file = "Basket.csv")
 
 
 # Rules based on Category C
 rules <- apriori(Basket, parameter=list(minlen= 2, support=0.01, confidence = 0.2, target="rules"))
-inspect(sort(rules, by ="lift"))
+d <- inspect(sort(rules, by ="lift"))
 highLiftRules <- head(sort(rules, by ="lift"), 5)
 plot(highLiftRules, method = "graph", control = list(type="items"))
 
